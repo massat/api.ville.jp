@@ -24,14 +24,14 @@ helpers do
 
 end
 
+get %r{/members(\.(.+))?} do
 
-get '/members.?:format?' do
-
-  format = params[:format] || :json
+  format = params[:captures].nil? ? :json : params[:captures][1]
   format = format.to_sym
 
   # fetch members
-  db      = Mongo::Connection.new.db('ville')
+  dsn     = settings.dsn
+  db      = Mongo::Connection.new(dsn[:host], dsn[:port]).db(dsn[:db])
   members = db.collection('member').find.to_a
 
   render(format, members)
@@ -46,7 +46,8 @@ get %r{/member/([a-zA-Z0-9]+)(\.(.+))?} do
   format = format.to_sym
 
   # fetch members
-  db     = Mongo::Connection.new.db('ville')
+  dsn    = settings.dsn
+  db     = Mongo::Connection.new(dsn[:host], dsn[:port]).db(dsn[:db])
   member = db.collection('member').find_one({:name => slug})
 
   halt 404 if member.empty?
