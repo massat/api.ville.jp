@@ -64,7 +64,7 @@ module Jp
               content.to_json
             when :jsonp
               callback = params[:callback] || 'alert'
-              "<script type=\"text/javascript\">#{callback}(#{JSON.unparse(content)})</script>"
+              "#{callback}(#{content.to_json});"
           end
         end
 
