@@ -58,7 +58,7 @@ module Jp
         format = params[:captures][2] || :json
         format = format.to_sym
 
-        # fetch members
+        # fetch member
         member = get_connection.collection('member').find_one({:name => slug})
 
         halt 404 if member.empty?
