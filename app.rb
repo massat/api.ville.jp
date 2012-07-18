@@ -58,13 +58,14 @@ module Jp
           end
 
           content_type formats[format]
+          json = content.to_json
 
           case format
             when :json
-              content.to_json
+              json
             when :jsonp
               callback = params[:callback] || 'alert'
-              "#{callback}(#{content.to_json});"
+              "#{callback}(#{json});"
           end
         end
 
